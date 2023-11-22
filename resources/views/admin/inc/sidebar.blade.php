@@ -58,6 +58,17 @@
             </ul>
         </li>
         <li>
+            <a href="{{ route('admin.get_instructorapproval') }}">
+                <div class="parent-icon"><i class='bx bx-user-circle'></i>
+                </div>
+                <div class="menu-title">Verify Instructors</div>
+            </a>
+            <ul>
+                <!-- <li> <a href="#"><i class="bx bx-right-arrow-alt"></i>Add Category</a></li> -->
+
+            </ul>
+        </li>
+        <li>
             <a href="{{ route('admin.get_instructors') }}">
                 <div class="parent-icon"><i class='bx bx-user-circle'></i>
                 </div>
@@ -76,6 +87,16 @@
             </a>
 
         </li>
+
+        <li>
+            <a href="{{route('payment_withdrawl')}}" class="has-arrow">
+                <div class="parent-icon"><i class='bx bx-user-circle'></i>
+                </div>
+                <div class="menu-title">Payment Withdrawal</div>
+            </a>
+
+        </li>
+
         <li>
             <a href="{{route('helps.index')}}" class="">
                 <div class="parent-icon"><i class='bx bx-user-circle'></i>

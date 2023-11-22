@@ -39,7 +39,9 @@ class Instructorhelpsupport extends Controller
         $message = new Supportmessagetracker();
         $support->subject = $request->hsf_subject;
         $support->issues = $request->hsf_issue;
+        $support->tran_id = $request->ordwid;
         $support->created_tag = 'INSTRUCTOR';
+        
         $support->created_by = $user;
         $support->save();
 
@@ -47,6 +49,7 @@ class Instructorhelpsupport extends Controller
         $message->ticket_id = $lastInsertedID;
         $message->f_id = $user;
         $message->t_id = 0;
+        
         $message->message = $request->hsf_issue;
         $message->save();
 

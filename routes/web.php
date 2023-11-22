@@ -43,12 +43,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, "index"])->name("home");
 Route::get('/course/{id}', [HomeController::class, "single_course"])->name("course.single");
 Route::get('add_cart/{course_id}', [HomeController::class, "add_cart"])->name("add_cart");
-
+Route::get('cart', [HomeController::class, "cart"])->name("cart");
 Route::get('terms-and-conditions', [HomeController::class, "tc"])->name("tc");
 Route::get('privacy-and-policy', [HomeController::class, "pp"])->name("pp");
 
 Route::middleware('auth')->group(function () {
     Route::get("checkout/{course_id}", [OrderController::class, "checkout"])->name("checkout");
+    Route::get("cart-checkout", [OrderController::class, "cart_checkout"])->name("cart-checkout");
+
     Route::post("payment/{course_id}", [OrderController::class, "payment"])->name("payment");
     
     Route::post("paypal/payment/success", [OrderController::class, "payment_success"])->name("payment.success");
@@ -63,10 +65,16 @@ Route::middleware('auth')->group(function () {
     // Route::get("study/lesson/incomplete/{lesson_id}", [StudyController::class, "learn"])->name("study.learn");
 
     Route::get("home/my-courses/learning/", [HomeController::class, "learning"])->name("my_courses");
+    Route::get("home/be-instructor/", [HomeController::class, "instructorship"])->name("be.instructor");
+    Route::get("home/instructor-registration/", [HomeController::class, "reginstructor"])->name("reg.instructor");
+    Route::post("home/completeregistration", [HomeController::class, "submitregis"])->name("beainstructor");
+    Route::get("home/completeregistration", [InstructorController::class, "dashboard"])->name("beainstructors");
 
     Route::get('/profile', [HomeController::class, 'edit'])->name('profile.edit');
     // Route::patch('/profile', [HomeController::class, 'update'])->name('profile.update');
     // Route::delete('/profile', [HomeController::class, 'destroy'])->name('profile.destroy');
+
+    Route::post("/ask_question", [InstructorController::class, "ask_question"])->name("ask_question");
 
 });
 
@@ -81,6 +89,9 @@ Route::middleware('auth')->prefix("instructor")->group(function () {
     Route::post("chatinsert", [Instructorhelpsupport::class, "insertchat"])->name("helpo.insert");
     Route::post("paymentadd", [InstructorController::class, "paymentmethodadd"])->name("instructor.paymentadd");
     Route::post("withdrawlrequest", [InstructorController::class, "withdraw"])->name("instructor.withdrawlrequest");
+    Route::get("forumdetails", [InstructorController::class, "fetchforum"])->name("instructor.fetchforums");
+    Route::get("/forumdetails/{tran_id}", [InstructorController::class,"allhead"])->name('forum.details');
+    Route::post("/replyinstructor", [InstructorController::class,"replying"])->name('instrunctor.reply');
     
     // Category Routes
     Route::post("category/subcategories", [CategoryController::class, "get_subcategories"])->name("category.subcategories");
@@ -111,26 +122,30 @@ Route::middleware('auth')->prefix("instructor")->group(function () {
 // Admin Routes
 Route::get("/admin", function () {
     return view("admin.cms.create");
-});
+})->middleware("admin");
+Route::get('/terms', [CmsController::class, "terms"])->name('terms')->middleware("admin");
+Route::get('/privacy', [CmsController::class, "priv"])->name('privacy')->middleware("admin");
+Route::post('/addprivacy', [CmsController::class, "addprivacy"])->name('add.privacy')->middleware("admin");
+Route::post('/addterms', [CmsController::class, "addterms"])->name('add.terms')->middleware("admin");
+Route::resource("categories", CategoryController::class)->middleware("admin");
+Route::resource("banners", BannermanagementController::class)->middleware("admin");
+Route::get('/getwithdrawl', [InstructorController::class, "getallwithdrawl"])->name('instructor_withdrawl')->middleware("admin");
 
- Route::get('/terms', [CmsController::class, "terms"])->name('terms');
- Route::get('/privacy', [CmsController::class, "priv"])->name('privacy');
- Route::post('/addprivacy', [CmsController::class, "addprivacy"])->name('add.privacy');
- Route::post('/addterms', [CmsController::class, "addterms"])->name('add.terms');
- Route::resource("categories", CategoryController::class);
- Route::resource("banners", BannermanagementController::class);
-
- Route::middleware('auth')->prefix("admin")->group(function () {
+Route::middleware(['auth', 'admin'])->prefix("admin")->group(function () {
     Route::resource("courses", CourseController::class);
     Route::resource("helps", HelpsupportController::class);
     Route::resource("adminprofile", Adminprofilemanagement::class);
     Route::resource("coursesinfo", AdminCourseController::class);
     Route::post('/addprivacy', [AdminCourseController::class, "updatecoursestat"])->name('stat.update');
     Route::post('/editphoto', [Adminprofilemanagement::class, "setpickphoto"])->name('adminprofile.setpic');
-
+    Route::get("/get_instructors_approval", [AdminController::class, "get_all_instructor"])->name("admin.get_instructorapproval");
     Route::get("/get_students", [AdminController::class, "get_students"])->name("admin.get_students");
     Route::get("/get_instructors", [AdminController::class, "get_instructors"])->name("admin.get_instructors");
+    Route::get("/refund/{tran_id}", [AdminController::class,"refunding"])->name('refund.done');
+    Route::get("/approveinstructor/{id}", [AdminController::class,"approving"])->name('instructor_approving');
 
+
+    Route::get("/payment_withdrawl", [AdminController::class, "payment_withdrawl"])->name("payment_withdrawl");
 });
 
 require __DIR__.'/auth.php';

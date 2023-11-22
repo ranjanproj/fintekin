@@ -9,6 +9,7 @@ use App\Models\Course;
 use App\Models\CourseMeta;
 use App\Models\Enroll;
 use App\Models\Lesson;
+use App\Models\InstructordetailsModel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -29,8 +30,7 @@ class HomeController extends Controller
         {
             $category->courses = DB::table('course_metas')
                                     ->join("courses", "course_metas.course_id", "=", "courses.id") 
-                                    ->where("courses.category_id", $category->id)
-                                    ->where("courses.is_approved", 1)->get();
+                                    ->where("courses.category_id", $category->id)->get();
 
             if(count($category->courses) > 0) 
             {
@@ -96,6 +96,42 @@ class HomeController extends Controller
            array_push($menu['category'], $arr1);
          }
         return $menu;
+    }
+
+    public function instructorship(){
+        $menus = $this->get_menus();
+        return view('frontend.instructor', ["menus" => $menus]);   
+    }
+
+    public function reginstructor(){
+        $menus = $this->get_menus();
+        
+
+        return view('frontend.instructormform', ["menus" => $menus]);   
+    }
+
+    public function submitregis(Request $rst){
+        $menus = $this->get_menus();
+        if ($rst->hasFile('file_upload')) {
+            $pdfFile = $rst->file('file_upload');
+            $destinationPath = public_path('/instructorcertificate'); // Change the path as needed
+            $fileName = $pdfFile->getClientOriginalName();
+            $pdfFile->move($destinationPath, $fileName);
+
+            $instructor = new InstructordetailsModel();
+            $instructor->user_id = auth()->user()->id;
+            $instructor->desig = $rst->designation;
+            $instructor->working = $rst->current_working;
+            $instructor->last_qualified = $rst->last_qualification;
+            $instructor->spec = $rst->specialization;
+            $instructor->exp = $rst->teaching_experience;
+            $instructor->certificate = $fileName;
+            $instructor->save();
+            $courses = Course::where("instructor_id", auth()->user()->id)->get();
+
+            return view("instructor.dashboard", ["courses" => $courses]);
+            
+        }
     }
 
     public function add_cart(Request $request)
@@ -218,5 +254,35 @@ class HomeController extends Controller
         $ss = DB::select("select * from cms");
         
         return $ss;
+    }
+
+    public function cart(Request $request)
+    {
+        $menus      = $this->get_menus();
+        $records    = [];
+        $carts      = [];
+        
+        if (Auth::check()) 
+        {
+            $carts = Cart::where("student_id", auth()->user()->id)->get();
+        }
+        else 
+        {
+            if ($request->session()->exists('carts')) 
+            {
+                $carts = $request->session()->get("carts");
+            } 
+        }
+
+        $total = 0;
+        
+        foreach($carts as $item)
+        {
+            $course = Course::find($item['course_id']);
+            $total+=$course->sale_price;
+            $records[] = Course::find($item['course_id']);
+        }
+
+        return view("frontend.cart", ["records" => $records, "total" => $total, "menus" => $menus]);
     }
 }

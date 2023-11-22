@@ -12,6 +12,17 @@
     <link href="{{ asset('assets/frontend/css/responsive.css') }} " rel="stylesheet" />
     <script src="{{ asset('assets/frontend/js/jquery.min.js') }}"></script>
     <link rel="icon" href="{{ asset('assets/frontend/images/favicon.png') }}" sizes="32x32" />
+    <style>
+        .disabled-link {
+            pointer-events: none;
+            /* Disable pointer events */
+            color: #999;
+            /* Change color to visually indicate it is disabled */
+            text-decoration: none;
+            /* Optionally remove underline */
+            /* Additional styles to visually indicate a disabled link */
+        }
+    </style>
 </head>
 
 <body>
@@ -47,7 +58,48 @@
                                 <a class="dropdown-item" href="{{ route('my_courses') }}">My Learning</a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{{ route('instructor.dashboard') }}">Instructor Dashboard</a>
+                                <a class="dropdown-item" href="myprofile.php">My Cart</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="myprofile.php">Wishlist</a>
+                            </li>
+                            @php
+
+                            $mid = DB::table('instructorregistration')->where('user_id',auth()->user()->id)->get();
+
+                            $prec = $mid->count();
+                            if($prec==1){
+                            $stst = $mid->first()->status;
+                            }
+
+
+                            @endphp
+                            <?php if (($prec == 1) && ($stst == 1)) { ?>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('beainstructors') }}">Instructor Dashboard</a>
+                                </li>
+                            <?php } elseif ($prec == 0) { ?>
+
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('be.instructor') }}">Become an Instructor</a>
+                                </li>
+                            <?php } elseif (($prec == 1) && ($stst == 2)) { ?>
+
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('instructor.dashboard') }}">Instructor Dashboard</a>
+                                </li>
+                            <?php } ?>
+                            <li>
+                                <a class="dropdown-item" href="myprofile.php">Notification</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="myprofile.php">Messages</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="myprofile.php">Account Setting</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="myprofile.php">Help & Support</a>
                             </li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
@@ -55,12 +107,12 @@
                                     <a class="dropdown-item" href="javascript:;" onclick="parentNode.submit();">Logout</a>
                                 </form>
                             <li>
-                            @endif
+                                @endif
                         </ul>
                     </div>
                 </div>
                 <div class="cart__wrapp">
-                    <a href="#">
+                    <a href="{{ route('cart') }}">
                         <img src="{{ asset('assets/frontend/images/cart.png') }}" alt="" />
                         <span>0</span>
                     </a>

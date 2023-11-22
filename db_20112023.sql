@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 13, 2023 at 10:46 AM
+-- Generation Time: Nov 20, 2023 at 05:56 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -32,6 +32,28 @@ CREATE TABLE `banner` (
   `banner_title` varchar(100) NOT NULL,
   `banner_img` varchar(200) NOT NULL,
   `banner_link` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `banner`
+--
+
+INSERT INTO `banner` (`id`, `banner_title`, `banner_img`, `banner_link`) VALUES
+(1, 'Empowerment Through Learning', 'banner/5x23KBXYz5IDKN606cAqr193LSUKXmD5qjXfEEXd.jpg', 'https://www.google.com/'),
+(2, 'Empowerment Through Learning', 'banner/avyNoNPwv3M0UT1X9q6QkYSJlyc01eFoTZHpxwWP.jpg', 'https://www.google.com/');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `carts`
+--
+
+CREATE TABLE `carts` (
+  `id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -96,6 +118,13 @@ CREATE TABLE `cms` (
   `termsncond` longtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `cms`
+--
+
+INSERT INTO `cms` (`id`, `privacy`, `termsncond`) VALUES
+(1, '<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>', '<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>');
+
 -- --------------------------------------------------------
 
 --
@@ -125,8 +154,7 @@ CREATE TABLE `courses` (
 --
 
 INSERT INTO `courses` (`id`, `instructor_id`, `title`, `subtitle`, `thumbnail`, `language`, `category_id`, `level`, `price_type`, `price`, `sale_price`, `is_approved`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 'Tensorflow 2.0: Deep Learning and Artificial Intelligence', 'Machine Learning & Neural Networks for Computer Vision, Time Series Analysis, NLP, GANs, Reinforcement Learning, +More!', 'thumbnail/1F20EmnaHetxOwvp0NMr8xvAZRd31PBm5NC2wZAs.jpg', 'english(us)', 2, 'BEGINNER', 'FREE', NULL, NULL, 0, '2023-10-12 23:27:31', '2023-10-12 23:27:31', NULL),
-(3, 1, 'PyTorch for Deep Learning in 2023: Zero to Mastery', 'Learn PyTorch. Become a Deep Learning Engineer. Get Hired.', 'thumbnail/76X3EBt8aGzQkFhXhDu5tR9XeXE6dbIrP8mRrQVx.jpg', 'english(uk)', 2, 'BEGINNER', 'PAID', 200, 159, 0, '2023-10-13 00:40:58', '2023-10-13 00:40:58', NULL);
+(1, 2, 'Test', 'Test1', NULL, 'ABC', 1, 'BEGINNER', 'FREE', 0, 0, 1, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -172,7 +200,11 @@ CREATE TABLE `enrolls` (
 --
 
 INSERT INTO `enrolls` (`id`, `order_id`, `student_id`, `course_id`, `created_at`, `updated_at`) VALUES
-(1, NULL, 1, 1, '2023-10-13', '2023-10-13');
+(3, 16, 1, 1, '2023-10-16', '2023-10-16'),
+(4, NULL, 4, 3, '2023-10-19', '2023-10-19'),
+(5, NULL, 4, 1, '2023-10-19', '2023-10-19'),
+(6, NULL, 1, 1, '2023-10-19', '2023-10-19'),
+(7, NULL, 4, 1, '2023-10-19', '2023-10-19');
 
 -- --------------------------------------------------------
 
@@ -189,6 +221,84 @@ CREATE TABLE `failed_jobs` (
   `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `forummessages`
+--
+
+CREATE TABLE `forummessages` (
+  `id` int(11) NOT NULL,
+  `forum_id` int(11) NOT NULL,
+  `fr_id` int(11) NOT NULL,
+  `to_id` int(11) NOT NULL,
+  `stat` int(11) NOT NULL DEFAULT 1,
+  `message` text NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `forummessages`
+--
+
+INSERT INTO `forummessages` (`id`, `forum_id`, `fr_id`, `to_id`, `stat`, `message`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 2, 1, 'Message from Raktim Banerjee', '2023-10-19 11:26:28', '2023-10-19 11:26:28'),
+(2, 2, 4, 2, 1, 'Message from John', '2023-10-19 11:27:25', '2023-10-19 11:27:25'),
+(3, 1, 2, 1, 0, 'Hoop', '2023-10-19 11:27:58', '2023-10-19 11:27:58'),
+(4, 2, 2, 4, 0, 'Poop', '2023-10-19 11:28:05', '2023-10-19 11:28:05');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `forums`
+--
+
+CREATE TABLE `forums` (
+  `id` int(11) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `chapter_id` int(11) NOT NULL,
+  `lesson_id` int(11) NOT NULL,
+  `created_by` int(11) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `forums`
+--
+
+INSERT INTO `forums` (`id`, `course_id`, `chapter_id`, `lesson_id`, `created_by`, `created_at`, `updated_at`) VALUES
+(1, 1, 3, 3, 1, '2023-10-19 11:26:28', '2023-10-19 11:26:28'),
+(2, 1, 3, 3, 4, '2023-10-19 11:27:25', '2023-10-19 11:27:25');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `instructorregistration`
+--
+
+CREATE TABLE `instructorregistration` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `desig` varchar(200) NOT NULL,
+  `working` varchar(500) NOT NULL,
+  `last_qualified` varchar(200) NOT NULL,
+  `spec` varchar(500) NOT NULL,
+  `exp` varchar(20) NOT NULL,
+  `certificate` varchar(200) NOT NULL,
+  `status` int(11) NOT NULL DEFAULT 1,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `instructorregistration`
+--
+
+INSERT INTO `instructorregistration` (`id`, `user_id`, `desig`, `working`, `last_qualified`, `spec`, `exp`, `certificate`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 'software developer', 'TSM', 'B.Tech', 'Python,JAVA', '5', 'LIGHT Updated Lesson plan.pdf', 1, '2023-11-17 06:10:20', '2023-11-17 06:10:20');
 
 -- --------------------------------------------------------
 
@@ -212,8 +322,8 @@ CREATE TABLE `lessons` (
 
 INSERT INTO `lessons` (`id`, `chapter_id`, `title`, `content_type`, `content`, `created_at`, `updated_at`) VALUES
 (3, 2, 'Introduction on course', 'video/mp4', 'videos/1697182742.mp4', '2023-10-12 23:51:59', '2023-10-13 02:09:02'),
-(4, 2, 'Introduction on Tensorflow', NULL, NULL, '2023-10-12 23:52:05', '2023-10-13 01:36:38'),
-(5, 3, 'Setup Tensorflow', NULL, NULL, '2023-10-12 23:55:11', '2023-10-13 01:37:34'),
+(4, 2, 'Introduction on Tensorflow', 'video/mp4', 'videos/1697187304.mp4', '2023-10-12 23:52:05', '2023-10-13 03:25:05'),
+(5, 3, 'Setup Tensorflow', 'video/mp4', 'videos/1697187311.mp4', '2023-10-12 23:55:11', '2023-10-13 03:25:12'),
 (6, 4, 'Introduction on course', NULL, NULL, '2023-10-13 00:45:32', '2023-10-13 01:07:25'),
 (7, 5, NULL, NULL, NULL, '2023-10-13 00:49:11', '2023-10-13 00:49:11'),
 (8, 6, NULL, NULL, NULL, '2023-10-13 00:49:24', '2023-10-13 00:49:24'),
@@ -241,7 +351,6 @@ CREATE TABLE `migrations` (
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `purchase_by` int(11) NOT NULL,
-  `course_id` int(11) DEFAULT NULL,
   `order_id` text DEFAULT NULL,
   `payment_id` text DEFAULT NULL,
   `payment_status` text DEFAULT NULL,
@@ -249,6 +358,40 @@ CREATE TABLE `orders` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `purchase_by`, `order_id`, `payment_id`, `payment_status`, `amount`, `created_at`, `updated_at`) VALUES
+(14, 1, '28T928334E0177519', '28T928334E0177519', 'PAID', 0, '2023-10-16 05:43:21', '2023-10-16 05:46:17'),
+(15, 1, NULL, NULL, NULL, NULL, '2023-10-16 06:24:55', '2023-10-16 06:24:55'),
+(16, 1, '5LD60677RU329012N', '5LD60677RU329012N', 'PAID', 170, '2023-10-16 06:25:53', '2023-10-16 06:26:37');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_metas`
+--
+
+CREATE TABLE `order_metas` (
+  `id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `amount` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `order_metas`
+--
+
+INSERT INTO `order_metas` (`id`, `order_id`, `course_id`, `amount`, `created_at`, `updated_at`) VALUES
+(1, 14, 3, 159, '2023-10-16 05:43:21', '2023-10-16 05:43:21'),
+(2, 14, 1, 170, '2023-10-16 05:43:21', '2023-10-16 05:43:21'),
+(3, 15, 1, 170, '2023-10-16 06:24:55', '2023-10-16 06:24:55'),
+(4, 16, 1, 170, '2023-10-16 06:25:53', '2023-10-16 06:25:53');
 
 -- --------------------------------------------------------
 
@@ -299,6 +442,21 @@ CREATE TABLE `personal_access_tokens` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `refund`
+--
+
+CREATE TABLE `refund` (
+  `id` int(11) NOT NULL,
+  `tran_id` int(11) NOT NULL,
+  `amount` double NOT NULL,
+  `stat` int(11) NOT NULL DEFAULT 0,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `suporttrackers`
 --
 
@@ -308,9 +466,17 @@ CREATE TABLE `suporttrackers` (
   `issues` text NOT NULL,
   `created_by` int(11) NOT NULL,
   `created_tag` varchar(50) NOT NULL,
+  `tran_id` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `suporttrackers`
+--
+
+INSERT INTO `suporttrackers` (`id`, `subject`, `issues`, `created_by`, `created_tag`, `tran_id`, `created_at`, `updated_at`) VALUES
+(1, 'course related', 'dfdfdf', 1, 'INSTRUCTOR', NULL, '2023-10-17 07:54:09', '2023-10-17 07:54:09');
 
 -- --------------------------------------------------------
 
@@ -328,6 +494,14 @@ CREATE TABLE `supportmessagetrackers` (
   `updated_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `supportmessagetrackers`
+--
+
+INSERT INTO `supportmessagetrackers` (`id`, `ticket_id`, `f_id`, `t_id`, `message`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 0, 'dfdfdf', '2023-10-17 13:24:09', '2023-10-17 13:24:09'),
+(13, 1, 1, 0, 'hehe', '2023-10-19 09:04:30', '2023-10-19 09:04:30');
+
 -- --------------------------------------------------------
 
 --
@@ -341,6 +515,15 @@ CREATE TABLE `transactions` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `transactions`
+--
+
+INSERT INTO `transactions` (`id`, `type`, `ref_id`, `created_at`, `updated_at`) VALUES
+(1, 'EARNING', 12, '2023-10-16 04:45:50', '2023-10-16 04:45:50'),
+(2, 'EARNING', 14, '2023-10-16 05:46:17', '2023-10-16 05:46:17'),
+(3, 'EARNING', 16, '2023-10-16 06:26:37', '2023-10-16 06:26:37');
 
 -- --------------------------------------------------------
 
@@ -366,7 +549,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `profile_pic`, `created_at`, `updated_at`) VALUES
 (1, 'Raktim Banerjee', 'raktimbanerjee9@gmail.com', NULL, '$2y$10$pWnm0.bnsnQN8.7rtTfMtOt4fhaGygVnPQg/d/Xp6pRU3kZCoT62W', NULL, NULL, '2023-10-12 23:16:59', '2023-10-12 23:16:59'),
-(2, 'Tamoghna Gupta', 'tamoghnadeveloper@gmail.com', NULL, '$2y$10$7woquqYW1LxXdTrnC.HmUuCkEnUD12oKQnEztppGmWVUEPMLh3S8.', NULL, NULL, '2023-10-13 01:52:47', '2023-10-13 01:52:47');
+(2, 'Tamoghna Gupta', 'tamoghnadeveloper@gmail.com', NULL, '$2y$10$pWnm0.bnsnQN8.7rtTfMtOt4fhaGygVnPQg/d/Xp6pRU3kZCoT62W', NULL, NULL, '2023-10-13 01:52:47', '2023-10-13 01:52:47'),
+(3, 'Tamoghna Gupta', 'tamoghnadevelopes@gmail.com', NULL, '$2y$10$.KVgUxaJ4t4Z5TaAL3dF2OYdOMZ2UONSyLV1wuFuyoKJFHdgAbkNS', NULL, NULL, '2023-10-16 03:32:14', '2023-10-16 03:32:14'),
+(4, 'Susmita Sahoo', 'admin@gmail.com', NULL, '$2y$10$u/NK/2W6HtcJXVSNSy363uZHm2dyaXLp7K2O4jY3klkSIwCVBbRp6', NULL, NULL, '2023-10-19 05:27:08', '2023-10-19 05:27:08');
 
 -- --------------------------------------------------------
 
@@ -378,7 +563,7 @@ CREATE TABLE `withdrawals` (
   `id` int(11) NOT NULL,
   `withdrawal_by` int(11) DEFAULT NULL,
   `amount` double(11,2) DEFAULT NULL,
-  `withdrawal_status` varchar(255) DEFAULT NULL,
+  `withdrawal_status` varchar(255) DEFAULT 'PENDING',
   `file` varchar(255) DEFAULT NULL,
   `reference` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
@@ -393,6 +578,12 @@ CREATE TABLE `withdrawals` (
 -- Indexes for table `banner`
 --
 ALTER TABLE `banner`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `carts`
+--
+ALTER TABLE `carts`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -439,6 +630,24 @@ ALTER TABLE `failed_jobs`
   ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
 
 --
+-- Indexes for table `forummessages`
+--
+ALTER TABLE `forummessages`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `forums`
+--
+ALTER TABLE `forums`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `instructorregistration`
+--
+ALTER TABLE `instructorregistration`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `lessons`
 --
 ALTER TABLE `lessons`
@@ -454,6 +663,12 @@ ALTER TABLE `migrations`
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `order_metas`
+--
+ALTER TABLE `order_metas`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -475,6 +690,12 @@ ALTER TABLE `personal_access_tokens`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
+
+--
+-- Indexes for table `refund`
+--
+ALTER TABLE `refund`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `suporttrackers`
@@ -516,7 +737,13 @@ ALTER TABLE `withdrawals`
 -- AUTO_INCREMENT for table `banner`
 --
 ALTER TABLE `banner`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `carts`
+--
+ALTER TABLE `carts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -534,13 +761,13 @@ ALTER TABLE `chapters`
 -- AUTO_INCREMENT for table `cms`
 --
 ALTER TABLE `cms`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `course_metas`
@@ -552,13 +779,31 @@ ALTER TABLE `course_metas`
 -- AUTO_INCREMENT for table `enrolls`
 --
 ALTER TABLE `enrolls`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `forummessages`
+--
+ALTER TABLE `forummessages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `forums`
+--
+ALTER TABLE `forums`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `instructorregistration`
+--
+ALTER TABLE `instructorregistration`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `lessons`
@@ -576,7 +821,13 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `order_metas`
+--
+ALTER TABLE `order_metas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `payment_methods`
@@ -591,28 +842,34 @@ ALTER TABLE `personal_access_tokens`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `refund`
+--
+ALTER TABLE `refund`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `suporttrackers`
 --
 ALTER TABLE `suporttrackers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `supportmessagetrackers`
 --
 ALTER TABLE `supportmessagetrackers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `withdrawals`

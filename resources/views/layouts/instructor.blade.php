@@ -30,6 +30,20 @@
       <div class="sidebar-nav-wrap">
         <nav>
           <ul>
+            @php
+
+            $mid = DB::table('instructorregistration')->where('status', 1)->where('user_id',auth()->user()->id)->get();$fin = DB::table('instructorregistration')->where('status', 2)->where('user_id',auth()->user()->id)->get();
+            $prec = $mid->count();
+
+            @endphp
+            <?php if ($prec == 1){ ?>
+            <li>
+              <a href="" title="Courses">
+                <i class="fa-solid fa-circle-play"></i>
+                <span>Dashboard</span>
+              </a>
+            </li>
+<?php } else { ?>
             <li>
               <a href="{{ route('instructor.dashboard') }}" title="Courses">
                 <i class="fa-solid fa-circle-play"></i>
@@ -37,8 +51,21 @@
               </a>
             </li>
             <li>
+              <a href="communication.html" title="Communication">
+                <i class="fa-solid fa-comment"></i>
+                <span>Communication</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{ route('instructor.earning') }}" title="Earnings">
+                <i class="fa-solid fa-money-bill"></i>
+                <span>Earnings</span>
+              </a>
+            </li>
+            <li>
               <a href="{{route('enrolling.index')}}" title="Enrollment">
                 <i class="fa-solid fa-money-bill"></i>
+
                 <span>Student Enrolled</span>
               </a>
             </li>
@@ -50,21 +77,28 @@
               </a>
             </li>
             <li>
-              <a href="{{route('instructor.transaction')}}" title="Enrollment">
-                <i class="fa-solid fa-money-bill"></i>
-                  <span>Transaction History</span>
-              </a>
-            </li>
-            <li>
               <a href="javascript:;" class="has-arrow" title="Help & Support">
                 <i class="fa-solid fa-question"></i>
                 <span>Help & Support</span>
               </a>
               <ul>
-                <li> <a href="{{route('help.create')}}"><i class="bx bx-right-arrow-alt"></i>New Ticket</a></li>
-                <li> <a href="{{route('help.index')}}"><i class="bx bx-right-arrow-alt"></i>All Tickets</a></li>
+                <li> <a href="{{route('help.create')}}"><i class="bx bx-right-arrow-alt"></i>Add Support</a></li>
+                <li> <a href="{{route('help.index')}}"><i class="bx bx-right-arrow-alt"></i>View Support</a></li>
               </ul>
             </li>
+            <li>
+              <a href="{{route('instructor.transaction')}}" title="Enrollment">
+                <i class="fa-solid fa-money-bill"></i>
+                <span>Transaction History</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{route('instructor.fetchforums')}}" title="Enrollment">
+                <i class="fa-solid fa-money-bill"></i>
+                <span>Question Forum</span>
+              </a>
+            </li>
+<?php } ?>
           </ul>
         </nav>
       </div>
@@ -174,8 +208,8 @@
               <div class="dropdown-menu" aria-labelledby="accountDropdown">
                 <a class="dropdown-item" href="{{route('my_courses')}}">Student Dashboard</a>
                 <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <a class="dropdown-item" href="#" onclick="parentNode.submit();">Logout</a>
+                  @csrf
+                  <a class="dropdown-item" href="javascript:;" onclick="parentNode.submit();">Logut</a>
                 </form>
               </div>
             </div>
@@ -195,6 +229,7 @@
   <script src="https://kit.fontawesome.com/2d537fef4a.js" crossorigin="anonymous"></script>
   <script src="{{ asset('assets/instructor/vendors/owl-carousel-2.3.4/owl.carousel.min.js') }}"></script>
   <script src="{{ asset('assets/instructor/js/script.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>
